@@ -32,9 +32,10 @@ get:
 	godep get $(libdep)
 save:
 	godep save
+
 test: 
 	echo No unit tests written, see transform package
-# GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep go test -v
+#  $(GOPATH)/bin/godep go test -v
 
 test-filter:  test-yaml2json test-json2yaml
 	touch $(tmplist)
