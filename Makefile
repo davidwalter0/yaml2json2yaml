@@ -4,7 +4,7 @@ DIR=$(GOPATH)
 .PHONY: yaml2json json2yaml 
 targets:=$(patsubst %.go,bin/%,$(wildcard *.go))
 
-all:
+all: init build test
 	@echo make targets init to initialize godeps, get, save, test and build
 
 build: $(targets)
@@ -19,19 +19,19 @@ tmplist= spec.image.json.json2yaml			\
      spec.image.json.yaml2json.unformatted	
 
 
+init: get save
+
 %: bin/%
 
 bin/%: %.go
 	@echo "Building via % rule for $@ from $<"
 	@mkdir -p bin
-	GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep go build -a -ldflags '-s' -o $@ $<
-
-init: get save
+	godep go build -a -ldflags '-s' -o $@ $<
 
 get:
-	GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep get $(libdep)
+	godep get $(libdep)
 save:
-	GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep save
+	godep save
 test: 
 	echo No unit tests written, see transform package
 # GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep go test -v
