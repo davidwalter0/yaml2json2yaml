@@ -6,6 +6,11 @@ yaml2json2yaml using transform library based on github.com/lbronze1man/yaml2json
 
 bin/json2yaml,bin/yaml2json built for x86_64 linux
 
+- Example copy tools from docker container
+
+```docker run --rm -v ${PWD}/target:/target yaml2json2yaml:latest cp /bin/yaml2json /bin/json2yaml /bin/slack-status /target```
+
+
 Usage
 ====================
 ### shell
