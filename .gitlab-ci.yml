@@ -7,16 +7,16 @@ variables:
   config_url:  http://ci-secret-config/slackurl
   secret_url:  http://ci-secret-config/kubeconfig
   deploy_yaml: http://ci-secret-config/deploy.yaml
+  GOPATH:      /go
+  PATH:       ${GOPATH}/bin:${PATH}
 
 build-yaml2json2yaml:
   stage: build
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
     # - yum -y -q install make
-    # - export GOPATH=/go
     # - GO15VENDOREXPERIMENT=1 go get --ldflags '-s -w' github.com/tools/godep
     # - GO15VENDOREXPERIMENT=1 go install --ldflags '-s -w' github.com/tools/godep
-    - export PATH=${GOPATH}/bin:${PATH}
     - go get github.com/davidwalter0/transform
     - ./build
     - rc=$?
