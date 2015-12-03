@@ -83,7 +83,7 @@ function main
             # "color": "#36a64f", // Can either be one of 'good', 'warning', 'danger', or any hex color code
             # - color: "#D00000"
 
-docker run --rm k8s-docker-registry:5000/yaml2json2yaml:latest /bin/yaml2json --compress > ${json} <<EOF
+            cat > ${json}.yaml <<EOF
 attachments:                                                                                                        
 - color: "${color}"
   user: Gitlab-CI
@@ -97,6 +97,9 @@ attachments:
   # pretext: |
   #   <http://${gitlab_host}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
 EOF
+            echo docker run --rm k8s-docker-registry:5000/yaml2json2yaml:latest /bin/yaml2json --compress < ${json}.yaml > ${json}
+            docker run --rm k8s-docker-registry:5000/yaml2json2yaml:latest /bin/yaml2json --compress < ${json}.yaml > ${json}
+            echo curl --silent ${url} -d@"${json}"
             curl --silent ${url} -d@"${json}"
         done
     fi
@@ -107,8 +110,8 @@ EOF
     else
         echo rm -f ${json} ${slackurl}
     fi
-    cat ${json}
-    cat ${slackurl}
+    echo cat ${json}
+    echo cat ${slackurl}
 }
 
 main ${@}
