@@ -2,6 +2,9 @@ build-yaml2json2yaml:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
     - yum -y -q install make
+    - export GOPATH=/go
+    - GO15VENDOREXPERIMENT=1 go get --ldflags '-s -w' github.com/tools/godep
+    - GO15VENDOREXPERIMENT=1 go install --ldflags '-s -w' github.com/tools/godep
     - make init save build
     - bin/slack-status yaml2json2yaml-build ${?}
     - ./dockerize
