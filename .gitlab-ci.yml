@@ -20,10 +20,12 @@ build-yaml2json2yaml:
     - go get github.com/davidwalter0/transform
     - ./build
     - rc=$?
+    - step=build
     - bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
     - echo bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
     - ./dockerize
     - rc=$?
+    - step=dockerize
     - echo bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
     - bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
   only:
