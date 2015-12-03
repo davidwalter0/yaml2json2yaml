@@ -105,9 +105,10 @@ EOF
         echo rm -f ${json} ${slackurl}
         cat ${json}
     else
-        rm -f ${json} ${slackurl}
+        echo rm -f ${json} ${slackurl}
     fi
-
+    cat ${json}
+    cat ${slackurl}
 }
 
 main ${@}
