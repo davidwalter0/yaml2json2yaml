@@ -21,8 +21,10 @@ build-yaml2json2yaml:
     - ./build
     - rc=$?
     - bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
+    - echo bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
     - ./dockerize
     - rc=$?
+    - echo bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
     - bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
   only:
     - master
