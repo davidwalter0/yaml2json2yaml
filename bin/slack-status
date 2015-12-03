@@ -1,5 +1,6 @@
-#!/bin/bash
-
+#!/bin/bash -x
+echo ${@}
+debug=1
 function usage
 {
     echo ${0##*/} --step=step-text --rc=return-code --gitlab-user=user --gitlab-host=host-or-ip --slack-url=url-for-secret
@@ -100,7 +101,12 @@ EOF
         done
     fi
 
-    rm -f ${json} ${slackurl}
+    if (( debug )); then
+        echo rm -f ${json} ${slackurl}
+        cat ${json}
+    else
+        rm -f ${json} ${slackurl}
+    fi
 
 }
 
