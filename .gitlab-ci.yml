@@ -5,6 +5,7 @@ build-yaml2json2yaml:
     - export GOPATH=/go
     - GO15VENDOREXPERIMENT=1 go get --ldflags '-s -w' github.com/tools/godep
     - GO15VENDOREXPERIMENT=1 go install --ldflags '-s -w' github.com/tools/godep
+    - export PATH=${GOPATH}/bin:${PATH}
     - make init save build
     - bin/slack-status yaml2json2yaml-build ${?}
     - ./dockerize
