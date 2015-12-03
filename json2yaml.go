@@ -24,7 +24,6 @@ func main() {
 }
 
 func _main() error {
-	flag.Parse()
 	var err error
 	var data []byte
 	var input []byte

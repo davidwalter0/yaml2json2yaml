@@ -26,7 +26,7 @@ init: get save
 bin/%: %.go
 	@echo "Building via % rule for $@ from $<"
 	@mkdir -p bin
-	godep go build -a -ldflags '-s' -o $@ $<
+	./build
 
 get:
 	godep get $(libdep)
@@ -39,12 +39,14 @@ test:
 
 test-filter:  test-yaml2json test-json2yaml
 	touch $(tmplist)
+	bin/json2yaml --version
 	bin/json2yaml < spec.image.json.yaml2json.unformatted > spec.image.json.json2yaml.reformatted
 
-test-json2yaml: all
+test-json2yaml: bin/json2yaml
 	bin/json2yaml < spec.image.json.yaml2json > spec.image.json.json2yaml
 
-test-yaml2json: yaml2json
+test-yaml2json: bin/yaml2json
+	bin/yaml2json --version
 	bin/yaml2json < spec.image.json > spec.image.json.yaml2json
 	bin/yaml2json --compress < spec.image.json > spec.image.json.yaml2json.unformatted
 

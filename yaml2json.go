@@ -27,8 +27,6 @@ var indent = flag.Int("indent", 2, "--indent n, where n is the number of spaces 
 var file = flag.String("file", "", "--file=json file to convert to yaml")
 
 func _main() error {
-	flag.Parse()
-
 	var data []byte
 	var input []byte
 	var err error
