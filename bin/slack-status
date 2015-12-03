@@ -1,14 +1,12 @@
-#!/bin/bash -x
-echo ${@}
-debug=1
+#!/bin/bash
+
+debug=0
+
 function usage
 {
     echo ${0##*/} --step=step-text --rc=return-code --gitlab-user=user --gitlab-host=host-or-ip --slack-url=url-for-secret
     exit 3
 }
-
-
-debug=0
 
 dir=$(dirname $(readlink -f ${0}))
 short=${dir%/*}
@@ -108,10 +106,8 @@ EOF
         echo rm -f ${json} ${slackurl}
         cat ${json}
     else
-        echo rm -f ${json} ${slackurl}
+        rm -f ${json} ${slackurl}
     fi
-    echo cat ${json}
-    echo cat ${slackurl}
 }
 
 main ${@}

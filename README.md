@@ -1,6 +1,7 @@
 Description
 ===================
-yaml2json2yaml using transform library based on github.com/lbronze1man/yaml2json [![Build Status](https://travis-ci.org/davidwalter0/yaml2json2yaml.svg?branch=master)](https://travis-ci.org/davidwalter0/yaml2json2yaml)
+[![build status](http://k8s-gitlab-ui/ci/projects/3/status.png?ref=master)](http://k8s-gitlab-ui/ci/projects/3?ref=master) 
+yaml2json2yaml using transform library based on github.com/lbronze1man/yaml2json
 
 bin/json2yaml,bin/yaml2json built for x86_64 linux
 
