@@ -6,7 +6,9 @@ build-yaml2json2yaml:
     - GO15VENDOREXPERIMENT=1 go get --ldflags '-s -w' github.com/tools/godep
     - GO15VENDOREXPERIMENT=1 go install --ldflags '-s -w' github.com/tools/godep
     - export PATH=${GOPATH}/bin:${PATH}
-    - make init save build
+    - go get github.com/davidwalter0/transform
+    - ./build
+    - echo skipping make init save build
     - bin/slack-status yaml2json2yaml-build ${?}
     - ./dockerize
     - bin/slack-status yaml2json2yaml-dockerize ${?}
