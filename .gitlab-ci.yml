@@ -30,6 +30,8 @@ build-yaml2json2yaml:
     - step=dockerize
     - if (( debug )); then echo bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-port=${gitlab_port} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}; fi
     - bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-port=${gitlab_port} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
+    - docker run --rm -v ${PWD}/target:/target yaml2json2yaml:latest cp /bin/yaml2json /bin/json2yaml /bin/slack-status /target
+    - ls -al ${PWD}/target
   only:
     - master
   tags:
