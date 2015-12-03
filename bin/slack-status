@@ -4,7 +4,7 @@ debug=0
 
 function usage
 {
-    echo ${0##*/} --step=step-text --rc=return-code --gitlab-user=user --gitlab-host=host-or-ip --slack-url=url-for-secret
+    echo ${0##*/} --step=step-text --rc=return-code --gitlab-user=user --gitlab-host=host-or-ip  --gitlab-port=port --slack-url=url-for-secret
     exit 3
 }
 
@@ -12,6 +12,7 @@ dir=$(dirname $(readlink -f ${0}))
 short=${dir%/*}
 short=${short##*/}
 gitlab_host=128.107.15.211
+gitlab_port=80
 gitlab_user=davidwalter0
 slack_url=http://slack-config/slackurl
 
@@ -52,6 +53,9 @@ function setup
             --gitlab-host=*)
                 gitlab_host=${arg##*=}
                 ;;
+            --gitlab-port=*)
+                gitlab_port=${arg##*=}
+                ;;
             --gitlab-user=*)
                 gitlab_user=${arg##*=}
                 ;;
@@ -86,18 +90,22 @@ attachments:
 - color: "${color}"
   user: Gitlab-CI
   fallback: |
-     <http://${gitlab_host}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
+     <http://${gitlab_host}:${gitlab_port}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
   fields:                                                                                   
     - short: false                  
-      # title: "<http://${gitlab_host}/${gitlab_user}/builds|${short} step: ${step} status: ${status}>"
+      # title: "<http://${gitlab_host}:${gitlab_port}/${gitlab_user}/builds|${short} step: ${step} status: ${status}>"
       value: |
-        <http://${gitlab_host}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
+        <http://${gitlab_host}:${gitlab_port}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
   # pretext: |
-  #   <http://${gitlab_host}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
+  #   <http://${gitlab_host}:${gitlab_port}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
 EOF
+            if (( debug )); then
             echo "docker run --rm k8s-docker-registry:5000/yaml2json2yaml:latest /bin/yaml2json --compress < ${json}.yaml > ${json}"
+            fi
             docker run --rm --interactive k8s-docker-registry:5000/yaml2json2yaml:latest /bin/yaml2json --compress < ${json}.yaml > ${json}
-            echo "curl --silent ${url} -d@\"${json}\""
+            if (( debug )) ; then
+                echo "curl --silent ${url} -d@\"${json}\""
+            fi
             curl --silent ${url} -d@"${json}"
         done
     fi
