@@ -2,67 +2,107 @@
 
 function usage
 {
-    echo ${0##*/} step-or-current-process-name return-code
+    echo ${0##*/} --step=step-text --rc=return-code --gitlab-user=user --gitlab-host=host-or-ip --slack-url=url-for-secret
     exit 3
 }
 
-step=${1}
 
-if [[ ! ${step:-} ]]; then
-    usage
-fi
-
-status=0
-
-if (( ${#} < 2 )); then
-    usage
-else
-    status=${2}
-fi
-
-case ${status} in
-    0)
-        status=success
-        ;;
-    1)
-        status=warning
-        ;;
-    2)
-        status=error
-        ;;
-    3)
-        status="process or sequence error"
-        ;;
-esac
+debug=0
 
 dir=$(dirname $(readlink -f ${0}))
 short=${dir%/*}
 short=${short##*/}
-gitlabhost=k8s-node-02
-user=davidwalter0
-# make the json file one per call.
+gitlab_host=128.107.15.211
+gitlab_user=davidwalter0
+slack_url=http://slack-config/slackurl
+
+slack_tmp=$(mktemp /tmp/slack-url.XXXX)
 json=$(mktemp)
+
+function setup
+{
+    gitlabhost=128.107.15.211
+    gitlab_user=root
+    slack_url=http://slack-config/slackurl
+    for arg in ${@}; do
+        case ${arg} in
+            --step=*)
+                step=${arg##*=}
+                ;;
+            --rc=*)
+                status=${arg##*=}
+                case ${status} in
+                    0)
+                        status=success
+                        color=good
+                        ;;
+                    1)
+                        status=warning
+                        color=warning
+                        ;;
+                    2)
+                        status=error
+                        color=danger
+                        ;;
+                    3)
+                        color=danger
+                        status="process or sequence error"
+                        ;;
+                esac
+                ;;
+            --gitlab-host=*)
+                gitlab_host=${arg##*=}
+                ;;
+            --gitlab-user=*)
+                gitlab_user=${arg##*=}
+                ;;
+            --slack-url=*)
+                slack_url=${arg##*=}
+                ;;
+            --debug)
+                debug=1
+                ;;
+            *)
+                usage
+        esac
+    done
+}
+
+function main
+{
+    setup ${@}
+    if (( debug )) ; then
+        ssh k8s-node-02 curl --silent ${slack_url} > ${slack_tmp}
+    else
+        curl --silent --output ${slack_tmp} ${slack_url}
+    fi
+    chmod 600 ${slack_tmp}
+    if [[ -e ${slack_tmp} ]]; then
+        for url in $(cat ${slack_tmp}); do
+            # "color": "#36a64f", // Can either be one of 'good', 'warning', 'danger', or any hex color code
+            # - color: "#D00000"
+
 docker run --rm k8s-docker-registry:5000/yaml2json2yaml:latest /bin/yaml2json --compress > ${json} <<EOF
 attachments:                                                                                                        
-- color: "#D00000"
-  user: GitlabWebhook
+- color: "${color}"
+  user: Gitlab-CI
   fallback: |
-     <http://${gitlabhost}/${user}/${short}/builds|${short} step: ${step} status: ${status}>
+     <http://${gitlab_host}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
   fields:                                                                                   
     - short: false                  
-      # title: "<http://${gitlabhost}/${user}/builds|${short} step: ${step} status: ${status}>"
+      # title: "<http://${gitlab_host}/${gitlab_user}/builds|${short} step: ${step} status: ${status}>"
       value: |
-        <http://${gitlabhost}/${user}/${short}/builds|${short} step: ${step} status: ${status}>
+        <http://${gitlab_host}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
   # pretext: |
-  #   <http://${gitlabhost}/${user}/${short}/builds|${short} step: ${step} status: ${status}>
+  #   <http://${gitlab_host}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
 EOF
+            curl --silent ${url} -d@"${json}"
+        done
+    fi
 
-slackconfig=http://slack-config/slackurl
-slackurl=$(mktemp /tmp/slack-url.XXXX)
-curl --silent --output ${slackurl} ${slackconfig}
-echo slackurl=${slackurl}
-chmod 600 ${slackurl}
-if [[ -e ${slackurl} ]]; then
-    curl --silent $(cat ${slackurl}) -d@"${json}"
-fi
-rm -f ${json} ${slackurl}
+    rm -f ${json} ${slackurl}
+
+}
+
+main ${@}
+exit ${rc}

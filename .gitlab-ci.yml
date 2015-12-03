@@ -12,17 +12,18 @@ build-yaml2json2yaml:
   stage: build
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
-    - yum -y -q install make
-    - export GOPATH=/go
-    - GO15VENDOREXPERIMENT=1 go get --ldflags '-s -w' github.com/tools/godep
-    - GO15VENDOREXPERIMENT=1 go install --ldflags '-s -w' github.com/tools/godep
+    # - yum -y -q install make
+    # - export GOPATH=/go
+    # - GO15VENDOREXPERIMENT=1 go get --ldflags '-s -w' github.com/tools/godep
+    # - GO15VENDOREXPERIMENT=1 go install --ldflags '-s -w' github.com/tools/godep
     - export PATH=${GOPATH}/bin:${PATH}
     - go get github.com/davidwalter0/transform
     - ./build
-    - echo skipping make init save build
-    - bin/slack-status yaml2json2yaml-build ${?}
+    - rc=$?
+    - bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
     - ./dockerize
-    - bin/slack-status yaml2json2yaml-dockerize ${?}
+    - rc=$?
+    - bin/slack-status --step=${step} --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
   only:
     - master
   tags:
