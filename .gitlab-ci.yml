@@ -8,7 +8,7 @@ variables:
   config_url:  "http://ci-secret-config/slack.url"
   secret_url:  "http://ci-secret-config/kubeconfig"
   deploy_yaml: "http://ci-secret-config/deploy.yaml"
-  debug: 0
+  debug:       "0"
 
 build-yaml2json2yaml:
   stage: build
