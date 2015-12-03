@@ -2,7 +2,7 @@ build-yaml2json2yaml:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
     - yum -y -q install make
-    - ./build
+    - make init save build
     - bin/slack-status yaml2json2yaml-build ${?}
     - ./dockerize
     - bin/slack-status yaml2json2yaml-dockerize ${?}
