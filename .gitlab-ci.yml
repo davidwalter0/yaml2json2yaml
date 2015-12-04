@@ -9,6 +9,7 @@ variables:
   secret_url:  "http://ci-secret-config/kubeconfig"
   deploy_yaml: "http://ci-secret-config/deploy.yaml"
   debug:       "0"
+  registry:    "k8s-docker-registry:5000"
 
 build-yaml2json2yaml:
   stage: build
@@ -19,7 +20,6 @@ build-yaml2json2yaml:
     # - yum -y -q install make
     # - GO15VENDOREXPERIMENT=1 go get --ldflags '-s -w' github.com/tools/godep
     # - GO15VENDOREXPERIMENT=1 go install --ldflags '-s -w' github.com/tools/godep
-    - go get github.com/davidwalter0/transform
     - ./build
     - rc=$?
     - step=build

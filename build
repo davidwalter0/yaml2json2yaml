@@ -9,6 +9,7 @@ fi
 if go version|grep -q 1.5 ; then
     args="-s -w -X main.Build=$(date -u +%Y.%m.%d.%H.%M.%S.%:::z) -X main.Commit=$(git log --format=%hash-%aI -n1)"
 fi
+go get
 name=yaml2json
 CGO_ENABLED=0 go build -a --tags netgo -ldflags "${args}" -o ${dir}/bin/${name} ${name}.go common.go
 name=json2yaml
