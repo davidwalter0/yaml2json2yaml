@@ -17,9 +17,6 @@ build-yaml2json2yaml:
     - export GOPATH=/go
     - export PATH=${GOPATH}/bin:${PATH}
     - echo "${HOSTNAME}" $(pwd) $(date)
-    # - yum -y -q install make
-    # - GO15VENDOREXPERIMENT=1 go get --ldflags '-s -w' github.com/tools/godep
-    # - GO15VENDOREXPERIMENT=1 go install --ldflags '-s -w' github.com/tools/godep
     - ./build
     - rc=$?
     - step=build
