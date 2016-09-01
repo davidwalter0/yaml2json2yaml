@@ -6,7 +6,7 @@ cd ${dir}
 if go version|grep -q 1.4 ; then
     args="-s -w -X main.Build $(date -u +%Y.%m.%d.%H.%M.%S.%:::z) -X main.Commit $(git log --format=%hash-%aI -n1)"
 fi
-if go version|grep -q 1.5 ; then
+if go version|grep -qE '1\.[5-9]|2\.*' ; then
     args="-s -w -X main.Build=$(date -u +%Y.%m.%d.%H.%M.%S.%:::z) -X main.Commit=$(git log --format=%hash-%aI -n1)"
 fi
 go get

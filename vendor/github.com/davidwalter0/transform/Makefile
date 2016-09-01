@@ -1,15 +1,18 @@
+SHELL=/bin/bash
+
 libdep="gopkg.in/yaml.v2" 
-all:
+
+all: init get save build test
 	@echo make targets init to initialize godeps, get, save, test and build
-build: 
-	GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep go build -a -ldflags '-s'
 
 init: get save
 
+build: 
+	godep go build -a -ldflags '-s'
 get:
-	GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep get $(libdep)
+	godep get $(libdep)
 save:
-	GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep save
+	godep save
 test: 
-	GO15VENDOREXPERIMENT=1 GOPATH=${GOPATH} $(GOPATH)/bin/godep go test -v
+	godep go test -v
 

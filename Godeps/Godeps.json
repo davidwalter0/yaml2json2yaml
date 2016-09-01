@@ -1,14 +1,15 @@
 {
 	"ImportPath": "github.com/davidwalter0/yaml2json2yaml",
-	"GoVersion": "go1.5.1",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v74",
 	"Deps": [
 		{
 			"ImportPath": "github.com/davidwalter0/transform",
-			"Rev": "44fa61f3537ea0fca459aa2a0139654cabd82249"
+			"Rev": "be79b398c89c95185350ec9df9b511945ebf96bd"
 		},
 		{
 			"ImportPath": "gopkg.in/yaml.v2",
-			"Rev": "53feefa2559fb8dfa8d81baad31be332c97d6c77"
+			"Rev": "e4d366fc3c7938e2958e662b4258c7a89e1f0e3e"
 		}
 	]
 }

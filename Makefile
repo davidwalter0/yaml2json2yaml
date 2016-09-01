@@ -2,7 +2,8 @@
 
 DIR=$(GOPATH)
 .PHONY: yaml2json json2yaml 
-targets:=$(patsubst %.go,bin/%,$(wildcard *.go))
+# targets:=$(patsubst %.go,bin/%,$(wildcard *.go))
+targets:=$(patsubst %.go,bin/%,yaml2json.go json2yaml.go)
 
 all: init build test
 	@echo make targets init to initialize godeps, get, save, test and build
