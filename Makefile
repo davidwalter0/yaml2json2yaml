@@ -29,6 +29,9 @@ bin/%: %.go
 	@mkdir -p bin
 	./build
 
+install: build
+	for file in $(targets); do cp $(targets) ${GOPATH}/bin; done
+
 get:
 	godep get $(libdep)
 save:
