@@ -1,6 +1,6 @@
 Description
 ===================
-[![build status](http://128.107.15.211:8888/ci/projects/3/status.png?ref=master)](http://128.107.15.211:8888/ci/projects/3?ref=master)
+[![Build Status](https://travis-ci.org/davidwalter0/yaml2json2yaml.svg?branch=master)](https://travis-ci.org/davidwalter0/yaml2json2yaml)
 
 yaml2json2yaml using transform library based on github.com/lbronze1man/yaml2json
 
