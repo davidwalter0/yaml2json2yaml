@@ -6,7 +6,8 @@ go:
   - master
 
 install:
+  - go get "github.com/kardianos/govendor"
   - go get "github.com/davidwalter0/transform"  
 
 script:
-  - go test -v ./...
+  - make

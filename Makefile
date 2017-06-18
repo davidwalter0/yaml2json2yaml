@@ -6,7 +6,7 @@ DIR=$(GOPATH)
 targets:=$(patsubst %.go,bin/%,yaml2json.go json2yaml.go)
 
 all: init build test
-	@echo make targets init to initialize godeps, get, save, test and build
+	@echo make targets init to initialize, get, save, test and build
 
 build: $(targets)
 
@@ -33,13 +33,12 @@ install: build
 	for file in $(targets); do cp $(targets) ${GOPATH}/bin; done
 
 get:
-	godep get $(libdep)
+	govendor get $(libdep)
 save:
-	godep save
+	govendor sync
 
-test: 
-	echo No unit tests written, see transform package
-#  $(GOPATH)/bin/godep go test -v
+test: test-filter test-json2yaml test-yaml2json
+
 
 test-filter:  test-yaml2json test-json2yaml
 	touch $(tmplist)
